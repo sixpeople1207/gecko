@@ -8,23 +8,68 @@
 </head>
 <body>
     <script>
-        // https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd'
-        $(document).ready(function() {
-            const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
-            $('.btn').click(function() {
-                $.ajax({
-                    url: Url,
-                    type: "GET",
-                    success: function(result) {
-                        console.log(result)
-                    },
-                    error:function(error) {
-                        console.log({error})
-                    }
-                })
+        // Basic URL -> https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd'
+        // Document -> https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id__market_chart_range
+
+        // 300개를 돌면서 2020-11-5 부터 {To} 최고가가 1000%이상인 티커 
+        // 시총 얼마 이하. 
+    $(document).ready(function() {
+        const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
+        $('.btn_CGK_List').click(function() {
+            $.ajax({
+                url: Url,
+                type: "GET",
+                success: function(result) {
+                    console.log(result)
+                },
+                error:function(error) {
+                    console.log({error})
+                }
             })
         })
+    })
+    
+    $(document).ready(function() {
+    const Url = 'https://api.coingecko.com/api/v3/coins/bitcoin/history?date=5-11-2020&localization=false';
+    $('.btn_history').click(function() {
+        $.ajax({
+            url: Url,
+            type: "GET",
+            success: function(result) {
+                console.log(result)
+            },
+            error:function(error) {
+                console.log({error})
+            }
+        })
+    })
+    })
+
+    $(document).ready(function() {
+    const Url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232&precision=0';
+    $('.btn_timeTo_history').click(function() {
+        $.ajax({
+            url: Url,
+            type: "GET",
+            success: function(result) {
+                console.log(result)
+            },
+            error:function(error) {
+                console.log({error})
+            }
+        })
+    })
+    })
+
+    function toTimestamp(strDate){
+        var datum = Date.parse(strDate);
+        return datum/1000;
+        }
+
     </script>
-    <button class="btn">Click</button>
+    <button class="btn_CGK_List">Get CoinGecko List</button>
+    <button class="btn_history">Get Bitcoin History</button>
+    <button class="btn_timeTo_history">Get TimeTo History</button>
+
 </body>
 </html>
