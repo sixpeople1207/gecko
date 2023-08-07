@@ -28,29 +28,29 @@
                     success: function (result) {
                         // var res = result.map(function(v){return v.age;});
                         // console.log(res);
-                        //console.log(result[0])
-                        for (i = 0; i < result.length; i++) {
-                        // Runs 5 times, with values of step 0 through 4.
-                            var name = result[i]['id']
-                           // var rank = result[i]['market_cap_rank']
-                          var startDate = toTimestamp('2020-11-07')
-                          var endDate = toTimestamp('2020-12-07')
-                          if(i%5==0){
-                            function example() {
-                                sleep(10000).then(() => {
-                                    console.log("이렇게 구현하시면 됩니다.");
-                                });
-                            }
+                        console.log(result)
+                        // for (i = 0; i < result.length; i++) {
+                        // // Runs 5 times, with values of step 0 through 4.
+                        //     var name = result[i]['id']
+                        //    // var rank = result[i]['market_cap_rank']
+                        //   var startDate = toTimestamp('2020-11-07')
+                        //   var endDate = toTimestamp('2020-12-07')
+                        //   if(i%5==0){
+                        //     function example() {
+                        //         sleep(10000).then(() => {
+                        //             console.log("이렇게 구현하시면 됩니다.");
+                        //         });
+                        //     }
 
-                            function sleep (time) {
-                                return new Promise((resolve) => setTimeout(resolve, time));
-                            }
-                        }
-                            var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
-                              console.log(prices);
+                        //     function sleep (time) {
+                        //         return new Promise((resolve) => setTimeout(resolve, time));
+                        //     }
+                        // }
+                        //     var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
+                        //       console.log(prices);
                        
-                             // var res = get_CoinPrice_by_Date(name, '6-11-2020');
-                        }
+                        //      // var res = get_CoinPrice_by_Date(name, '6-11-2020');
+                        // }
                         // console.log(res['market_data']['current_price']['usd']);//['market_data']['usd']
                         // console.log(prices);//['market_data']['usd']
                         // console.log(toDateTime(1659830400000))
@@ -159,11 +159,14 @@
         <table class="table table-condensed table-striped table-hover">
         <thead>
         <tr>
-            <th>#</th>
+            <th>순위</th>
             <th>코인</th>
-            <th>시세</th>
-            <th>2020년대</th>
-            <th>최대값</th>
+            <th>현재가</th>
+            <th>24시간 변동률</th>
+            <th>비교가(조건날짜)</th>
+            <th>역대최고가</th>
+            <th>상승률(%)</th>
+
         </tr>
         </thead>
         <tbody>
