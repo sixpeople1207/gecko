@@ -27,41 +27,37 @@
                 }
             })
         })
-    })
-    
-    $(document).ready(function(ticker, date) {
-    const Url = 'https://api.coingecko.com/api/v3/coins/{ticker}/history?date={}&localization=false';
-    $('.btn_history').click(function() {
-        $.ajax({
-            url: Url,
-            type: "GET",
-            success: function(result) {
-                console.log(result)
+        $('.btn_timeTo_history').click(function() {
+            const Url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232&precision=0';
+            var start_date = $('.cl_startDate').val();
+            var end_date = $('.cl_endDate').val();
+            $.ajax({
+                url: Url,
+                type: "GET",
+                success: function(result) {
+                    console.log(result['prices'])
             },
             error:function(error) {
                 console.log({error})
             }
         })
     })
-    })
-
-    $(document).ready(function() {
-        $('.btn_timeTo_history').click(function() {
-            const Url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232&precision=0';
-            var start_date = $('.cl_startDate').val();
-            var end_date = $('.cl_endDate').val();
-
+   
+        $('.btn_history').click(function(name, date) {
+            name = 'bitcoin'
+            date = '5-11-2020'
+            const Url = 'https://api.coingecko.com/api/v3/coins/'+name+'/history?date='+date+'&localization=false';
             $.ajax({
                 url: Url,
                 type: "GET",
                 success: function(result) {
                     console.log(result)
-            },
-            error:function(error) {
-                console.log({error})
-            }
+                },
+                error:function(error) {
+                    console.log({error})
+                }
+            })
         })
-    })
     })
 
     function toTimestamp(strDate){
