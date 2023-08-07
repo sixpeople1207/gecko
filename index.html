@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CoinGecko API</title>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
+
 <body>
     <script>
         // Basic URL -> https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd'
@@ -13,64 +17,160 @@
 
         // 300개를 돌면서 2020-11-5 부터 {To} 최고가가 1000%이상인 티커 
         // 시총 얼마 이하. 
-    $(document).ready(function() {
-        const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
-        $('.btn_CGK_List').click(function() {
-            $.ajax({
-                url: Url,
-                type: "GET",
-                success: function(result) {
-                    console.log(result)
-                },
-                error:function(error) {
-                    console.log({error})
-                }
-            })
-        })
-        $('.btn_timeTo_history').click(function() {
-            const Url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=1392577232&to=1422577232&precision=0';
-            var start_date = $('.cl_startDate').val();
-            var end_date = $('.cl_endDate').val();
-            $.ajax({
-                url: Url,
-                type: "GET",
-                success: function(result) {
-                    console.log(result['prices'])
-            },
-            error:function(error) {
-                console.log({error})
-            }
-        })
-    })
-   
-        $('.btn_history').click(function(name, date) {
-            name = 'bitcoin'
-            date = '5-11-2020'
-            const Url = 'https://api.coingecko.com/api/v3/coins/'+name+'/history?date='+date+'&localization=false';
-            $.ajax({
-                url: Url,
-                type: "GET",
-                success: function(result) {
-                    console.log(result)
-                },
-                error:function(error) {
-                    console.log({error})
-                }
-            })
-        })
-    })
+        $(document).ready(function () {
+            const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
+            $('#search').click(function () {
+                 var edit_val = $('#startDate').val();
+            console.log(edit_val);
+                $.ajax({
+                    url: Url,
+                    type: "GET",
+                    success: function (result) {
+                        // var res = result.map(function(v){return v.age;});
+                        // console.log(res);
+                        //console.log(result[0])
+                        for (i = 0; i < result.length; i++) {
+                        // Runs 5 times, with values of step 0 through 4.
+                            var name = result[i]['id']
+                           // var rank = result[i]['market_cap_rank']
+                          var startDate = toTimestamp('2020-11-07')
+                          var endDate = toTimestamp('2020-12-07')
+                          if(i%5==0){
+                            function example() {
+                                sleep(10000).then(() => {
+                                    console.log("이렇게 구현하시면 됩니다.");
+                                });
+                            }
 
-    function toTimestamp(strDate){
-        var datum = Date.parse(strDate);
-        return datum/1000;
+                            function sleep (time) {
+                                return new Promise((resolve) => setTimeout(resolve, time));
+                            }
+                        }
+                            var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
+                              console.log(prices);
+                       
+                             // var res = get_CoinPrice_by_Date(name, '6-11-2020');
+                        }
+                        // console.log(res['market_data']['current_price']['usd']);//['market_data']['usd']
+                        // console.log(prices);//['market_data']['usd']
+                        // console.log(toDateTime(1659830400000))
+                    },
+                    error: function (error) {
+                        console.log({
+                            error
+                        })
+                    }
+                })
+            })
+        })
+            //버튼 눌렀을때 자동으로 돌면서 300개
+            function get_CoinPrice_by_Range(name , fromDate, toDate) {
+                const Url ='https://api.coingecko.com/api/v3/coins/' + name + '/market_chart/range?vs_currency=usd&from=' + fromDate + '&to=' + toDate + '&precision=0';
+                var search_var;
+                $.ajax({
+                    url: Url,
+                    type: "GET",
+                    async:false,
+                    success: function (result) {
+                        //console.log(result['prices'][0][1])
+                        //console.log(result['total_volumes'][0][1])
+                        search_var=result;
+                    },
+                    error: function (error) {
+                        console.log({
+                            error
+                        })
+                    }
+                })
+                return search_var;
+            }
+
+           function get_CoinPrice_by_Date(name, date) {
+               const Url = 'https://api.coingecko.com/api/v3/coins/' + name + '/history?date=' + date + '&localization=false';
+               var search_var;
+                $.ajax({
+                    url: Url,
+                    type: "GET",
+                    async:false,
+                    success: function (result) {
+                        search_var = result;
+                    },
+                    error: function (error) {
+                        console.log({
+                            error
+                        })
+                    }
+                })
+                return search_var;
+            }
+
+        function toTimestamp(strDate) {
+            var datum = Date.parse(strDate);
+            return datum / 1000;
         }
 
+        function toDateTime(timeStamp){
+            const timestamp = timeStamp
+            var myDate = new Date(timestamp);
+            return myDate;
+        }
     </script>
-    <button class="btn_CGK_List">Get CoinGecko List</button>
-    <button class="btn_history">Get Bitcoin History</button>
-    <button class="btn_timeTo_history">Get TimeTo History</button>
-    시작날짜 : <input type="date" class="cl_startDate">
-    완료날짜 : <input type="date" class="cl_endDate">
+  
+    <div class="container">
+          <div class="jumbotron jumbotron-fluid text-center mb-0">
+            <h3>
+            CoinGecko - 시가총액별 암호화폐 시세
+            </h3>
+           <hr class="my-4">
+        <span>
+            현재 전 세계 암호화폐 시가총액은 $1.21조이며, 최근 24시간 내 변동폭은 -0.1%입니다.
+        </span>
+        </div>
+        <nav class="navbar bg-dark border-bottom border-body">
+        <div class="container-fluid">
+            <span class="navbar-text">
+            <a class="navbar-brand" href="#">CoinTrend : 검색</a>
+            </span>
+           <button class="btn btn-primary" id="search" type="submit">Search</button>
+        </div>
+        </nav>
+        <!-- bootstrap 페이지 요소를 사용할 때 필수요소 -->
+        <div class="row">
+            <!-- bootstrap 페이지 요소를 사용할 때 필수요소 -->
+            <div class="col-sm-4">
+                <!-- style="background:#999;" : 영역을 눈으로 확인하기 위해 배경색을 적용했다 -->
+                <span>조건 | 시작 날짜:</span>
+                <input class="g-col-3" id="startDate"  placeholder="2020-11-05"
+                    aria-label=".form-control-sm example">
+            </div>
+            <div class="col-sm-4">
+                <span >완료 날짜:</span>
+                <input class="g-col-3" readonly type="text" placeholder="2023-8-05"
+                    aria-label=".form-control-sm example">
+            </div>
+            <div class="col-sm-4">
+                <span>상승률:</span>
+                <input class="g-col-3" type="text" placeholder="1000%">
+            </div>
+        <hr>
+        <hr>
+
+        </div>
+        <table class="table table-condensed table-striped table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>코인</th>
+            <th>시세</th>
+            <th>2020년대</th>
+            <th>최대값</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody> 
+        </table>
+    </div>
 
 </body>
+
 </html>
