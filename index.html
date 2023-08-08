@@ -21,6 +21,7 @@
             const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
             $('#search').click(function () {
                  var edit_val = $('#startDate').val();
+                 var txtt = '';
             console.log(edit_val);
                 $.ajax({
                     url: Url,
@@ -29,7 +30,10 @@
                         // var res = result.map(function(v){return v.age;});
                         // console.log(res);
                         console.log(result)
-                        // for (i = 0; i < result.length; i++) {
+                        for (i = 0; i < result.length; i++) {
+                            
+                            txtt += '<tr><td>' + result[i]['market_cap_rank'] + '</td><td>' + result[i]['name'] + '</td><td>' + result[i]['ath'] + '</td></tr>';
+                            document.getElementById('tbody').innerHTML = txtt;
                         // // Runs 5 times, with values of step 0 through 4.
                         //     var name = result[i]['id']
                         //    // var rank = result[i]['market_cap_rank']
@@ -50,7 +54,7 @@
                         //       console.log(prices);
                        
                         //      // var res = get_CoinPrice_by_Date(name, '6-11-2020');
-                        // }
+                        }
                         // console.log(res['market_data']['current_price']['usd']);//['market_data']['usd']
                         // console.log(prices);//['market_data']['usd']
                         // console.log(toDateTime(1659830400000))
@@ -156,7 +160,7 @@
         <hr>
 
         </div>
-        <table class="table table-condensed table-striped table-hover">
+        <table class="table table-condensed table-striped table-hover" id="table">
         <thead>
         <tr>
             <th>순위</th>
@@ -169,7 +173,8 @@
 
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
+
         </tbody> 
         </table>
     </div>
