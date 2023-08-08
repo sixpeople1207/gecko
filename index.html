@@ -18,21 +18,34 @@
         // 300개를 돌면서 2020-11-5 부터 {To} 최고가가 1000%이상인 티커 
         // 시총 얼마 이하. 
         $(document).ready(function () {
-            const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd';
+            const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd&order=market_cap_desc&per_page=300&page=1&sparkline=false';
             $('#search').click(function () {
                  var edit_val = $('#startDate').val();
                  var txtt = '';
             console.log(edit_val);
+            
                 $.ajax({
                     url: Url,
                     type: "GET",
                     success: function (result) {
                         // var res = result.map(function(v){return v.age;});
                         // console.log(res);
+                        var startDate = toTimestamp('2020-11-07')
+                        var endDate = toTimestamp('2020-12-07')
                         console.log(result)
                         for (i = 0; i < result.length; i++) {
-                            
-                            txtt += '<tr><td>' + result[i]['market_cap_rank'] + '</td><td>' + result[i]['name'] + '</td><td>' + result[i]['ath'] + '</td></tr>';
+                           // var prices = get_CoinPrice_by_Date(result[i]['id'],'2020-11-07');
+                            //console.log(prices)
+                            txtt += '<tr><td>' 
+                                + result[i]['market_cap_rank'] + '</td><td>' 
+                                + result[i]['name'] + '</td><td>' 
+                                     + result[i]['current_price'] + '</td><td>'
+                                         + result[i]['market_cap_change_percentage_24h']+"%" + '</td><td>'
+                                             + result[i]['ath'] + '</td><td>'
+                                + result[i]['ath'] + '</td><td>' 
+                                //+ prices + '</td><td>' 
+                                + result[i]['price_change_percentage_24h'] + '</td><td>' 
+                                '</td></tr>';
                             document.getElementById('tbody').innerHTML = txtt;
                         // // Runs 5 times, with values of step 0 through 4.
                         //     var name = result[i]['id']
@@ -50,7 +63,7 @@
                         //         return new Promise((resolve) => setTimeout(resolve, time));
                         //     }
                         // }
-                        //     var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
+                        // var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
                         //       console.log(prices);
                        
                         //      // var res = get_CoinPrice_by_Date(name, '6-11-2020');
@@ -65,8 +78,22 @@
                         })
                     }
                 })
+                                      
             })
-        })
+            // function sendRequest() {
+            // var httpRequest = new XMLHttpRequest();
+            // httpRequest.onreadystatechange = function() {
+            //     if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200 ) {
+            //         document.getElementById("text").innerHTML = httpRequest.responseText;
+            //     }
+            // };
+            // httpRequest.open("GET", "/examples/media/ajax_periodic_request.php");
+            // httpRequest.send();
+            // }
+        //     get_CoinPrice_by_Date("bitcoin","05-11-2020");
+        //    //    get_CoinPrice_by_Range("bitcoin" , fromDate, toDate)
+        //     window.setInterval("get_CoinPrice_by_Date('bitcoin','05-11-2020')", 3000); // 매 0.5초마다 Ajax 요청을 보냄.
+            })
             //버튼 눌렀을때 자동으로 돌면서 300개
             function get_CoinPrice_by_Range(name , fromDate, toDate) {
                 const Url ='https://api.coingecko.com/api/v3/coins/' + name + '/market_chart/range?vs_currency=usd&from=' + fromDate + '&to=' + toDate + '&precision=0';
@@ -92,12 +119,16 @@
            function get_CoinPrice_by_Date(name, date) {
                const Url = 'https://api.coingecko.com/api/v3/coins/' + name + '/history?date=' + date + '&localization=false';
                var search_var;
+            //    fetch(Url)
+            //    .then(data=>{return data.json()})
+            //    .then(res =>{console.log(res)})
                 $.ajax({
                     url: Url,
                     type: "GET",
                     async:false,
                     success: function (result) {
                         search_var = result;
+                        console.log(search_var)
                     },
                     error: function (error) {
                         console.log({
