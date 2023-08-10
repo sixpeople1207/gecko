@@ -1,0 +1,71 @@
+import pandas as pd
+import sqlite3
+import math
+import glob
+from PyQt5 import uic
+from PyQt5 import QtWidgets
+import sys
+
+form_class = uic.loadUiType('ui.ui')[0]
+
+
+# QDialog 인자를 ui.ui의 class와 동일한 객체를 집어넣어줘야한다. 기본 예제들은 모두 QMainWindow이다.
+class WindowClass(QtWidgets.QDialog, form_class):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.show()
+
+    def save_Excel(path, fromDate, endDate):
+        # pd.set_option('display.max_rows', None)
+        list = glob.glob('./*db')
+
+        conn = sqlite3.connect('./CoinData.db')
+
+        try:
+            coinlist = pd.read_sql("SELECT * FROM CoinList", conn)
+            history = pd.read_sql("SELECT * FROM CoinHistory", conn)
+
+            fromDate = '2022-01-05 09:00:00'
+            endDate = '2023-08-05 09:00:00'
+            columns = ['Name', 'FromPrice', 'MaxPrice', 'Per']
+
+            df = pd.DataFrame(columns=columns)
+            index = 0
+            for coin in coinlist['Name']:
+                index += 1
+                indexPrice = history[(history['Name'] == coin) &
+                                     (history['Date'] == fromDate)]
+                sliceHistory = history.loc[(history['Name'] == coin) &
+                                           (history['Date'] < endDate)]
+                maxPrice = sliceHistory.max(axis=0)
+
+                if(len(indexPrice) > 0):
+                    per = round(
+                        float(maxPrice['Price']/indexPrice['Price'].values), 1)*100
+                    df = df.append(
+                        {'Name': coin, 'FromPrice': indexPrice['Price'].values[0], 'MaxPrice': maxPrice['Price'], 'Per': per}, ignore_index=True)
+                else:
+                    per = "-"
+                    df = df.append(
+                        {'Name': coin, 'FromPrice': "없음", 'MaxPrice': maxPrice['Price'], 'Per': per}, ignore_index=True)
+            df.to_excel('excel.xlsx', index=False)
+            # with pd.ExcelWriter('./per.xlsx', engine='xlsxwriter') as writer:
+            #     df.to_excel(writer, index=False)
+            #     ws = writer.sheets['코인캑코']
+            # ## 칼럼 폭 조절
+            # for i, col in enumerate(df.columns):
+            #     width = '30'
+            #     ws.set_column(i, i, width+1) ## 여백을 위해 1 추가
+            #     ws.autofilter(0, 0, df.shape[0] - 1, df.shape[1] - 1) ## 첫 행 필터 추가
+            #     ws.freeze_panes(1, 0) ## 첫 행 고정
+            print('저장완료.')
+        except Exception as e:
+            print('Error.', e)
+
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    myWindow = WindowClass()
+    myWindow.show()
+    sys.exit(app.exec_())
