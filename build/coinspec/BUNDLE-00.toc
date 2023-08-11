@@ -1,0 +1,1 @@
+([('Coin', '/Users/jed/Desktop/개발/Gecko/gecko/dist/Coin', 'EXECUTABLE')],)
