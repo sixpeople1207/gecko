@@ -58,7 +58,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -76,7 +76,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QDateEdit" name="dateEdit"/>
+     <widget class="QDateEdit" name="fromDate"/>
     </item>
     <item>
      <widget class="QLabel" name="label">
@@ -86,11 +86,11 @@
      </widget>
     </item>
     <item>
-     <widget class="QDateEdit" name="dateEdit_2"/>
+     <widget class="QDateEdit" name="endDate"/>
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -108,10 +108,10 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit"/>
+     <widget class="QLineEdit" name="savePath"/>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pathButton">
       <property name="text">
        <string>Path</string>
       </property>
