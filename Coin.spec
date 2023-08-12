@@ -2,13 +2,13 @@
 
 
 block_cipher = None
-
+add_files = [('form.ui','.'),('CoinData.db','.')]
 
 a = Analysis(
     ['Coin.py'],
-    pathex=[],
+    pathex=['/Users/jed/Desktop/개발/Gecko/gecko'],
     binaries=[],
-    datas=[],
+    datas=add_files,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -37,6 +37,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon = ['icon.icns'],
 )
 coll = COLLECT(
     exe,
@@ -51,6 +52,6 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='Coin.app',
-    icon=None,
+    icon='icon.icns',
     bundle_identifier=None,
 )

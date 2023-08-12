@@ -2,7 +2,7 @@
 
 
 block_cipher = None
-add_files = [('form.ui','.')]
+add_files = [('form.ui','.'),('CoinData.db','.')]
 
 a = Analysis(
     ['Coin.py'],
@@ -45,6 +45,6 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='Coin.app',
-    icon=None,
+    icon='icon.icns',
     bundle_identifier=None,
 )
