@@ -18,12 +18,13 @@
         // 300개를 돌면서 2020-11-5 부터 {To} 최고가가 1000%이상인 티커 
         // 시총 얼마 이하. 
         $(document).ready(function () {
-            const Url = 'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd&order=market_cap_desc&per_page=300&page=1&sparkline=false';
+            const Url =
+                'https://api.coingecko.com/api/v3/coins/markets/?vs_currency=usd&order=market_cap_desc&per_page=300&page=1&sparkline=false';
             $('#search').click(function () {
-                 var edit_val = $('#startDate').val();
-                 var txtt = '';
-            console.log(edit_val);
-            
+                var edit_val = $('#startDate').val();
+                var txtt = '';
+                console.log(edit_val);
+
                 $.ajax({
                     url: Url,
                     type: "GET",
@@ -34,39 +35,41 @@
                         var endDate = toTimestamp('2020-12-07')
                         console.log(result)
                         for (i = 0; i < result.length; i++) {
-                           // var prices = get_CoinPrice_by_Date(result[i]['id'],'2020-11-07');
+                            // var prices = get_CoinPrice_by_Date(result[i]['id'],'2020-11-07');
                             //console.log(prices)
-                            txtt += '<tr><td>' 
-                                + result[i]['market_cap_rank'] + '</td><td>' 
-                                + result[i]['name'] + '</td><td>' 
-                                     + result[i]['current_price'] + '</td><td>'
-                                         + result[i]['market_cap_change_percentage_24h']+"%" + '</td><td>'
-                                             + result[i]['ath'] + '</td><td>'
-                                + result[i]['ath'] + '</td><td>' 
+                            txtt += '<tr><td>' +
+                                result[i]['market_cap_rank'] + '</td><td>' +
+                                result[i]['name'] + '</td><td>' +
+                                result[i]['current_price'] + '</td><td>' +
+                                result[i]['market_cap_change_percentage_24h'] + "%" +
+                                '</td><td>' +
+                                result[i]['ath'] + '</td><td>' +
+                                result[i]['ath'] + '</td><td>'
                                 //+ prices + '</td><td>' 
-                                + result[i]['price_change_percentage_24h'] + '</td><td>' 
-                                '</td></tr>';
+                                +
+                                result[i]['price_change_percentage_24h'] + '</td><td>'
+                            '</td></tr>';
                             document.getElementById('tbody').innerHTML = txtt;
-                        // // Runs 5 times, with values of step 0 through 4.
-                        //     var name = result[i]['id']
-                        //    // var rank = result[i]['market_cap_rank']
-                        //   var startDate = toTimestamp('2020-11-07')
-                        //   var endDate = toTimestamp('2020-12-07')
-                        //   if(i%5==0){
-                        //     function example() {
-                        //         sleep(10000).then(() => {
-                        //             console.log("이렇게 구현하시면 됩니다.");
-                        //         });
-                        //     }
+                            // // Runs 5 times, with values of step 0 through 4.
+                            //     var name = result[i]['id']
+                            //    // var rank = result[i]['market_cap_rank']
+                            //   var startDate = toTimestamp('2020-11-07')
+                            //   var endDate = toTimestamp('2020-12-07')
+                            //   if(i%5==0){
+                            //     function example() {
+                            //         sleep(10000).then(() => {
+                            //             console.log("이렇게 구현하시면 됩니다.");
+                            //         });
+                            //     }
 
-                        //     function sleep (time) {
-                        //         return new Promise((resolve) => setTimeout(resolve, time));
-                        //     }
-                        // }
-                        // var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
-                        //       console.log(prices);
-                       
-                        //      // var res = get_CoinPrice_by_Date(name, '6-11-2020');
+                            //     function sleep (time) {
+                            //         return new Promise((resolve) => setTimeout(resolve, time));
+                            //     }
+                            // }
+                            // var prices = get_CoinPrice_by_Range(name,startDate ,endDate); 
+                            //       console.log(prices);
+
+                            //      // var res = get_CoinPrice_by_Date(name, '6-11-2020');
                         }
                         // console.log(res['market_data']['current_price']['usd']);//['market_data']['usd']
                         // console.log(prices);//['market_data']['usd']
@@ -78,7 +81,7 @@
                         })
                     }
                 })
-                                      
+
             })
             // function sendRequest() {
             // var httpRequest = new XMLHttpRequest();
@@ -90,84 +93,86 @@
             // httpRequest.open("GET", "/examples/media/ajax_periodic_request.php");
             // httpRequest.send();
             // }
-        //     get_CoinPrice_by_Date("bitcoin","05-11-2020");
-        //    //    get_CoinPrice_by_Range("bitcoin" , fromDate, toDate)
-        //     window.setInterval("get_CoinPrice_by_Date('bitcoin','05-11-2020')", 3000); // 매 0.5초마다 Ajax 요청을 보냄.
+            //     get_CoinPrice_by_Date("bitcoin","05-11-2020");
+            //    //    get_CoinPrice_by_Range("bitcoin" , fromDate, toDate)
+            //     window.setInterval("get_CoinPrice_by_Date('bitcoin','05-11-2020')", 3000); // 매 0.5초마다 Ajax 요청을 보냄.
+        })
+        //버튼 눌렀을때 자동으로 돌면서 300개
+        function get_CoinPrice_by_Range(name, fromDate, toDate) {
+            const Url = 'https://api.coingecko.com/api/v3/coins/' + name + '/market_chart/range?vs_currency=usd&from=' +
+                fromDate + '&to=' + toDate + '&precision=0';
+            var search_var;
+            $.ajax({
+                url: Url,
+                type: "GET",
+                async: false,
+                success: function (result) {
+                    //console.log(result['prices'][0][1])
+                    //console.log(result['total_volumes'][0][1])
+                    search_var = result;
+                },
+                error: function (error) {
+                    console.log({
+                        error
+                    })
+                }
             })
-            //버튼 눌렀을때 자동으로 돌면서 300개
-            function get_CoinPrice_by_Range(name , fromDate, toDate) {
-                const Url ='https://api.coingecko.com/api/v3/coins/' + name + '/market_chart/range?vs_currency=usd&from=' + fromDate + '&to=' + toDate + '&precision=0';
-                var search_var;
-                $.ajax({
-                    url: Url,
-                    type: "GET",
-                    async:false,
-                    success: function (result) {
-                        //console.log(result['prices'][0][1])
-                        //console.log(result['total_volumes'][0][1])
-                        search_var=result;
-                    },
-                    error: function (error) {
-                        console.log({
-                            error
-                        })
-                    }
-                })
-                return search_var;
-            }
+            return search_var;
+        }
 
-           function get_CoinPrice_by_Date(name, date) {
-               const Url = 'https://api.coingecko.com/api/v3/coins/' + name + '/history?date=' + date + '&localization=false';
-               var search_var;
+        function get_CoinPrice_by_Date(name, date) {
+            const Url = 'https://api.coingecko.com/api/v3/coins/' + name + '/history?date=' + date +
+                '&localization=false';
+            var search_var;
             //    fetch(Url)
             //    .then(data=>{return data.json()})
             //    .then(res =>{console.log(res)})
-                $.ajax({
-                    url: Url,
-                    type: "GET",
-                    async:false,
-                    success: function (result) {
-                        search_var = result;
-                        console.log(search_var)
-                    },
-                    error: function (error) {
-                        console.log({
-                            error
-                        })
-                    }
-                })
-                return search_var;
-            }
+            $.ajax({
+                url: Url,
+                type: "GET",
+                async: false,
+                success: function (result) {
+                    search_var = result;
+                    console.log(search_var)
+                },
+                error: function (error) {
+                    console.log({
+                        error
+                    })
+                }
+            })
+            return search_var;
+        }
 
         function toTimestamp(strDate) {
             var datum = Date.parse(strDate);
             return datum / 1000;
         }
 
-        function toDateTime(timeStamp){
+        function toDateTime(timeStamp) {
             const timestamp = timeStamp
             var myDate = new Date(timestamp);
             return myDate;
         }
     </script>
-  
+
     <div class="container">
-          <div class="jumbotron jumbotron-fluid text-center mb-0">
+        <div class="jumbotron jumbotron-fluid text-center mb-0">
             <h3>
-            CoinGecko - 시가총액별 암호화폐 시세
+                CoinGecko - 시가총액별 암호화폐 시세
             </h3>
-           <hr class="my-4">
-        <span>
-            현재 전 세계 암호화폐 시가총액은 $1.21조이며, 최근 24시간 내 변동폭은 -0.1%입니다.
-        </span>
+            <hr class="my-4">
+            <span>
+                현재 전 세계 암호화폐 시가총액은 $1.21조이며, 최근 24시간 내 변동폭은 -0.1%입니다.
+            </span>
         </div>
         <nav class="navbar bg-dark border-bottom border-body">
-        <div class="container-fluid">
-            <span class="navbar-text">
-            <a class="navbar-brand" href="#">CoinTrend : 검색</a>
-            </span>
-           <button class="btn btn-primary" id="search" type="submit">Search</button>
-        </div>
+            <div class="container-fluid">
+                <span class="navbar-text">
+                    <a class="navbar-brand" href="#">CoinTrend : 검색</a>
+                </span>
+                <button class="btn btn-primary" id="search" type="submit">Search</button>
+            </div>
         </nav>
         <!-- bootstrap 페이지 요소를 사용할 때 필수요소 -->
         <div class="row">
@@ -175,11 +180,10 @@
             <div class="col-sm-4">
                 <!-- style="background:#999;" : 영역을 눈으로 확인하기 위해 배경색을 적용했다 -->
                 <span>조건 | 시작 날짜:</span>
-                <input class="g-col-3" id="startDate"  placeholder="2020-11-05"
-                    aria-label=".form-control-sm example">
+                <input class="g-col-3" id="startDate" placeholder="2020-11-05" aria-label=".form-control-sm example">
             </div>
             <div class="col-sm-4">
-                <span >완료 날짜:</span>
+                <span>완료 날짜:</span>
                 <input class="g-col-3" readonly type="text" placeholder="2023-8-05"
                     aria-label=".form-control-sm example">
             </div>
@@ -187,26 +191,26 @@
                 <span>상승률:</span>
                 <input class="g-col-3" type="text" placeholder="1000%">
             </div>
-        <hr>
-        <hr>
+            <hr>
+            <hr>
 
         </div>
         <table class="table table-condensed table-striped table-hover" id="table">
-        <thead>
-        <tr>
-            <th>순위</th>
-            <th>코인</th>
-            <th>현재가</th>
-            <th>24시간 변동률</th>
-            <th>비교가(조건날짜)</th>
-            <th>역대최고가</th>
-            <th>상승률(%)</th>
+            <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>코인</th>
+                    <th>현재가</th>
+                    <th>24시간 변동률</th>
+                    <th>비교가(조건날짜)</th>
+                    <th>역대최고가</th>
+                    <th>상승률(%)</th>
 
-        </tr>
-        </thead>
-        <tbody id="tbody">
+                </tr>
+            </thead>
+            <tbody id="tbody">
 
-        </tbody> 
+            </tbody>
         </table>
     </div>
 
